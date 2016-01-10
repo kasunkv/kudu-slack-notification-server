@@ -70,8 +70,8 @@ function getSlackText(parsedBody, success)
 {
     return (
         '*' + (parsedBody.siteName || 'unknown') + ':*\r\n' +
-        '>Deployment Finished for _' + (parsedBody.message || 'N/A') + '_\r\n' +
-        'By: @' + (parsedBody.author || 'unknown') + '\r\n' +
+        '>Deployment Finished for ' + (parsedBody.message || 'N/A') + '\r\n' +
+        'By: _' + (parsedBody.author || 'unknown') + '_\r\n' +
         'Deployment Status: *' + (success ? ':white_check_mark:': ':red_circle:') + ' ' + (success ? 'Success:': 'Failed:') + ' *\r\n' +
         'Deployment ID: *' + (parsedBody.id || '') + '*\r\n'
     );
