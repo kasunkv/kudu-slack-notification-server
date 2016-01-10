@@ -41,17 +41,15 @@ function sendToSlack(parsedRequest, callback)
 
 function convertToSlackMessage(body, channel)
 {
-    var parsedBody = trParseBody(body);
-    var success = (parsedBody.status=='success' && parsedBody.complete);
+    var parsedBody = tryParseBody(body);
+    var success = (parsedBody.status == 'success' && parsedBody.complete);
     return JSON.stringify({
-        username: getSlackUserName(parsedBody, success),
-        icon_emoji: success ? ':shipit:' : ':warning:',
-        text: getSlackText(parsedBody),
-        channel:channel || process.env.slackchannel
+        text: getSlackText(parsedBody, success),
+        channel: channel || process.env.slackchannel
     });
 }
 
-function trParseBody(body)
+function tryParseBody(body)
 {
     try
     {
@@ -68,27 +66,13 @@ function trParseBody(body)
     }
 }
 
-function getSlackUserName(parsedBody, success)
+function getSlackText(parsedBody, success)
 {
     return (
-        (success ? 'Published:': 'Failed:') +
-        ' ' +
-        (parsedBody.siteName || 'unknown') +
-        ' (' +
-        (parsedBody.id || '') +
-        ')'
-    );
-}
-
-function getSlackText(parsedBody)
-{
-    return (
-        'Initiated by: ' +
-        (parsedBody.author || 'unknown') +
-        ' ' +
-        (parsedBody.endTime || '') +
-        '\r\n```' +
-        (parsedBody.message || 'null message') +
-        '```'
+        '*' + (parsedBody.siteName || 'unknown') + ':*\r\n' +
+        '>Deployment Finished for _' + (parsedBody.message || 'N/A') + '_\r\n' +
+        'By: @' + (parsedBody.author || 'unknown') + '\r\n' +
+        'Deployment Status: *' + (success ? ':white_check_mark:': ':red_circle:') + ' ' + (success ? 'Success:': 'Failed:') + ' *\r\n' +
+        'Deployment ID: *' + (parsedBody.id || '') + '*\r\n'
     );
 }
