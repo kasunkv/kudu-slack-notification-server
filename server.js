@@ -1,7 +1,7 @@
-var http    = require('http');
-var url     = require('url');
-var slack   = require('./slack.js');
-var port    = process.env.port || 1337;
+var http = require('http');
+var url = require('url');
+var slack = require('./slack.js');
+var port = process.env.port || 1337;
 
 http.createServer(function (req, res) {
     var parsedRequest = parseRequest(req);
@@ -31,8 +31,8 @@ http.createServer(function (req, res) {
 function parseRequest(req)
 {
     var parsedRequest = {
-        body:       '',
-        channel:    url.parse(req.url, true).query.channel
+        body: '',
+        channel: url.parse(req.url, true).query.channel
     };
 
     req.on('data', function (chunk) { parsedRequest.body += chunk; });
